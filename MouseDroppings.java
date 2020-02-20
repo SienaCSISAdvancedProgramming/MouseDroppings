@@ -24,8 +24,24 @@ public class MouseDroppings extends MouseAdapter implements Runnable {
 
     public static final int SIZE = 10;
     public static final Color droppingColor = Color.RED;
+
+    // a list to keep track of the coordinates at which
+    // we will be drawing the circles (the "droppings")
     private ArrayList<Point> droppings = new ArrayList<>();
+    
     private JPanel panel;
+
+    // this method is called by the paintComponent method of
+    // the anonymous extension of JPanel, to keep that method
+    // from getting too long
+    protected void redraw(Graphics g) {
+	
+	// draw all of the ovals in the list
+	g.setColor(droppingColor);
+	for (Point p : droppings) {
+	    g.fillOval(p.x-SIZE/2, p.y-SIZE/2, SIZE, SIZE);
+	}
+    }
     
     /**
        The run method to set up the graphical user interface
@@ -55,12 +71,8 @@ public class MouseDroppings extends MouseAdapter implements Runnable {
 		    // overriding in JPanel
 		    super.paintComponent(g);
 
-		    // draw all of the ovals in the list
-		    g.setColor(droppingColor);
-		    for (Point p : droppings) {
-			g.fillOval(p.x-SIZE/2, p.y-SIZE/2, SIZE, SIZE);
-		    }
-		    
+		    // redraw our graphics items
+		    redraw(g);
 		}
 	    };
 	frame.add(panel);
